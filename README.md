@@ -1,70 +1,37 @@
-# Getting Started with Create React App
+# NFT MARKETPLACE (LAZY MINTING)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An NFT Market place that enables users to create and sell NFTs and NFT Vouchers on an NFT Marketplace
 
-## Available Scripts
+<b>Deployed Site Link: </b><a href="#">SampleLink.com</a>
 
-In the project directory, you can run:
+## Project Description
 
-### `npm start`
+### Home Page
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- <img src="https://res.cloudinary.com/di2rbecxm/image/upload/v1676752469/NFTMARKETPLACE/Image_001_hgyyvn.png" height="400"> </img>
+- This is the landing page for the NFT Market place project. It has following features
+  1. Icon along with the name of the NFT Marketplace that redirects to Home Page (this page).
+  2. Links that redirects to different pages of the site.
+  3. Connect Button which is integrated with the help of <a href="https://www.rainbowkit.com/" target="_blank" rel="noreferrer"><b>Rainbowkit</b></a>
+  4. NFT Gallery which shows some prominent/notable NFTs in this Marketplace
+  5. A Sign Up for updates section
+  6. Links to various social media handles of the NFT Marketplace.
+- Contributors
+  1. <a href="https://github.com/Kunal-Khatri-1/" target="_blank" rel="noreferrer"><b>Kunal Khatri</b></a>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Sample Feature 2
 
-### `npm test`
+- Sample Image
+- Description
+- Contributors
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Tech Stack
 
-### `npm run build`
+<p align="left">
+    <a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="react"/> </a>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" alt="javascript"/> </a>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"> <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwindcss"/> </a>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+</p>
