@@ -26,13 +26,29 @@ const GET_ACTIVE_ITEM = gql`
   }
 `;
 
+const GET_NOTABLE_ITEMS = gql`
+  {
+    activeItems(
+      first: 8
+      where: { buyer: "0x0000000000000000000000000000000000000000" }
+    ) {
+      id
+      buyer
+      seller
+      nftAddress
+      tokenId
+      price
+    }
+  }
+`;
+
 const StateContext = createContext();
 
 const {
-  ["1337"]: {
+  ["5"]: {
     lazyNft: { address: lazyNftAddress },
   },
-  ["1337"]: {
+  ["5"]: {
     lazyNft: { abi: lazyNftAbi },
   },
   ["5"]: {
@@ -99,6 +115,12 @@ export const StateContextProvider = ({ children }) => {
     data: activeItems,
   } = useQuery(GET_ACTIVE_ITEM);
 
+  const {
+    loading: notableItemsLoading,
+    error: notableItemsError,
+    data: notableItems,
+  } = useQuery(GET_NOTABLE_ITEMS);
+
   const { openConnectModal } = useConnectModal();
 
   const approveAndList = async (nftAddress, tokenId, price) => {
@@ -150,22 +172,34 @@ export const StateContextProvider = ({ children }) => {
     address: nftMarketplaceAddress,
     abi: nftMarketplaceAbi,
     functionName: "getProceeds",
-    args: [connectedAddress],
+    args: [connectedAddress || "0x0000000000000000000000000000000000000000"],
     chainId: 5,
     watch: true,
   });
 
   const withdrawProceeds = async () => {
-    const proceedsConfig = await prepareWriteContract({
-      address: nftMarketplaceAddress,
-      abi: nftMarketplaceAbi,
-      functionName: "getProceeds",
-      chainId: 5,
-    });
+    if (connectedAddressBalance > 0) {
+      const proceedsConfig = await prepareWriteContract({
+        address: nftMarketplaceAddress,
+        abi: nftMarketplaceAbi,
+        functionName: "getProceeds",
+        args: [connectedAddress],
+        chainId: 5,
+      });
 
-    const proceedsData = await writeContract(proceedsConfig);
-    await proceedsData.wait(1);
+      const proceedsData = await writeContract(proceedsConfig);
+      await proceedsData.wait(1);
+    }
   };
+
+  const { data: expectedTokenId } = useContractRead({
+    address: lazyNftAddress,
+    abi: lazyNftAbi,
+    functionName: "getExpectedTokenId",
+    args: [],
+    chainId: 5,
+    watch: true,
+  });
 
   return (
     <StateContext.Provider
@@ -189,7 +223,10 @@ export const StateContextProvider = ({ children }) => {
         collectedItems,
         createdItems,
         withdrawProceeds,
-        proceedsData: ethers.utils.formatEther(proceedsData),
+        proceedsData: ethers.utils.formatEther(proceedsData || "0"),
+        expectedTokenId,
+        notableItems,
+        notableItemsLoading,
       }}
     >
       {children}
@@ -198,5 +235,3 @@ export const StateContextProvider = ({ children }) => {
 };
 
 export const useStateContext = () => useContext(StateContext);
-
-//   const { data } = useContractRead(address, abi, "getExpectedTokenId", []);

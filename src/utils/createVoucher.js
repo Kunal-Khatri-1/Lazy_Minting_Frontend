@@ -1,6 +1,3 @@
-import { goerli, useSigner } from "wagmi";
-import { ethers } from "ethers";
-
 export const createVoucher = async (
   tokenId,
   uri,
@@ -38,6 +35,6 @@ export const createVoucher = async (
 
   return {
     ...voucher,
-    // signature,
+    signature,
   };
 };

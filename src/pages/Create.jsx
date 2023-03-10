@@ -6,9 +6,11 @@ import { useStateContext } from "../context";
 import utils from "../utils";
 
 import { useSigner } from "wagmi";
+import { ethers } from "ethers";
+import axios from "axios";
 
 const Create = () => {
-  const { tokenId, lazyNftAddress } = useStateContext();
+  const { lazyNftAddress } = useStateContext();
 
   const { data: signer } = useSigner();
 
@@ -16,32 +18,50 @@ const Create = () => {
     name: "",
     image: "",
     description: "",
+    tokenId: "",
     price: "",
     properties: [],
   });
 
   const handleFormFieldChange = (fieldName, value) => {
-    setForm({ ...form, [fieldName]: value, ["tokenId"]: tokenId });
+    setForm({ ...form, [fieldName]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const uri = await utils.uploadJsonToPinata(JSON.stringify({ ...form }));
-
+    console.log(form.tokenId, uri, form.price, signer, lazyNftAddress);
     const newVoucher = await utils.createVoucher(
-      tokenId,
+      form.tokenId,
       uri,
-      form.price,
+      ethers.utils.parseEther(form.price),
       signer,
-      lazyNftAddress
+      lazyNftAddress,
+      form.properties
     );
 
-    console.log(newVoucher);
+    const res = await axios({
+      method: "get",
+      url: "https://lazy-mint-api.onrender.com/nft",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
 
-    console.log(form);
+    console.log("nfts from server", res.data);
 
-    // axios.post("http://localhost:4000/insert", form);
+    const response = await axios({
+      method: "post",
+      url: "https://lazy-mint-api.onrender.com/nft/create",
+      data: newVoucher,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
+    console.log(response);
   };
 
   return (
@@ -83,6 +103,21 @@ const Create = () => {
                 value={form.description}
                 onChange={(e) =>
                   handleFormFieldChange("description", e.target.value)
+                }
+              />
+            </div>
+
+            <div className="mt-8">
+              <h3 className="text-2xl">Token Id *</h3>
+              <input
+                type="number"
+                min="1"
+                required
+                placeholder="1"
+                className="mt-2 py-[15px] sm:px-[25px] px-[15px] outline-none border-[1px] border-white bg-transparent text-white text-[14px] placeholder:text-gray-400 rounded-[10px] w-4/6 max-w-[500px] hover:border-blue-500 focus:border-blue-500"
+                value={form.tokenId}
+                onChange={(e) =>
+                  handleFormFieldChange("tokenId", e.target.value)
                 }
               />
             </div>

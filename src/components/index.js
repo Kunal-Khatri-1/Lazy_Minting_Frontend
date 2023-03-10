@@ -7,6 +7,7 @@ import DropBox from "./DropBox";
 import AddNftProperties from "./AddNftProperties";
 import NftGallery from "./NftGallery";
 import SearchBar from "./SearchBar";
+import ThreeCard from "./ThreeCard";
 
 export default {
   Button,
@@ -18,4 +19,5 @@ export default {
   AddNftProperties,
   NftGallery,
   SearchBar,
+  ThreeCard,
 };

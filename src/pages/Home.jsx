@@ -12,7 +12,10 @@ const Home = () => {
     console.log("Dummy function Home.jsx");
   };
 
-  const { activeItems, activeItemsLoading } = useStateContext();
+  const { notableItems: activeItems, notableItemsLoading: activeItemsLoading } =
+    useStateContext();
+
+  console.log(activeItems);
 
   return (
     <div>

@@ -811,16 +811,7 @@ export const contractDetails = {
   // https://goerli.etherscan.io/address/0x9f3063c5E25d3a25AB709E46B696bb6BA46225AF#code
   // https://goerli.etherscan.io/address/0x80a31853713cb11e6a6ce590a7f716ea42834a8f#code
   // https://goerli.etherscan.io/address/0xdB46875677F7AbF32AF22d701ef3260CDddD8bCa#code
-  1337: {
-    lazyNft: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      abi: lazyNftAbi,
-    },
-
-    basicNft: {
-      abi: basicNftAbi,
-    },
-  },
+  // 5: {},
   5: {
     basicNft: {
       abi: basicNftAbi,
@@ -830,7 +821,15 @@ export const contractDetails = {
       address: "0xb2EC00351D992E2a7371CB0C019d25D2a27c000D",
       abi: marketplaceAbi,
     },
+    lazyNft: {
+      address: "0x9f3063c5E25d3a25AB709E46B696bb6BA46225AF",
+      abi: lazyNftAbi,
+    },
   },
+
+  // basicNft: {
+  //   abi: basicNftAbi,
+  // },
 };
 
 // Build completed: QmcSVypxxa634v1BJ4oTEgPi9GByyD3xjqT8FdamsGbxgK
