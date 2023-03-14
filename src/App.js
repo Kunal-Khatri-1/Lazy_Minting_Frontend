@@ -88,6 +88,7 @@ function App() {
                     path="nft-details/:id/:id"
                     element={<pages.NftDescription />}
                   />
+                  <Route path="/threed" element={<pages.Three />} />
                 </Routes>
                 <components.Footer />
               </StateContextProvider>
