@@ -1,47 +1,65 @@
-import React from "react";
-import Skeleton from "react-loading-skeleton";
+import React, { useEffect } from "react";
 import { ethers } from "ethers";
 import { useState } from "react";
 import { useStateContext } from "../context";
-import { useContractRead } from "wagmi";
 import { fetchJsonFromIpfs } from "../utils/pinata";
 import { useNavigate } from "react-router";
-import { Html, OrbitControls } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import { readContract } from "@wagmi/core";
 
 const NftCard = ({
-  price = "0",
+  price: priceInWei,
   styles,
   style,
   nftAddress,
   tokenId,
   seller = "",
   defaultImage,
+  uri,
+  voucherId,
+  signature,
 }) => {
-  price = Math.round(ethers.utils.formatEther(price || 0) * 1000) / 1000;
-
   const [nftMetaData, setNftMetaData] = useState({});
+  const [price, setPrice] = useState(priceInWei);
+
+  const [isLoading, setIsLoading] = useState(true);
+
   const { basicNftAbi } = useStateContext();
 
-  const { data: tokenUri, isLoading: isLoadingNfts } = useContractRead({
-    address: nftAddress,
-    abi: basicNftAbi,
-    functionName: "tokenURI",
-    args: [tokenId],
-    chainId: 5,
-    onSuccess(tokenUri) {
-      (async () => {
-        const metaData = await fetchJsonFromIpfs(tokenUri);
-        if (metaData.image.startsWith("ipfs://")) {
-          metaData.image = metaData.image.replace(
-            "ipfs://",
-            "https://ipfs.io/ipfs/"
-          );
-        }
-        setNftMetaData(metaData);
-      })();
-    },
-  });
+  const addGatewayForImage = async (tokenUri) => {
+    const metaData = await fetchJsonFromIpfs(tokenUri);
+    if (metaData.image.startsWith("ipfs://")) {
+      metaData.image = metaData.image.replace(
+        "ipfs://",
+        "https://ipfs.io/ipfs/"
+      );
+    }
+    setNftMetaData(metaData);
+  };
+
+  const getTokenUri = async () => {
+    const tokenUri = await readContract({
+      address: nftAddress,
+      abi: basicNftAbi,
+      functionName: "tokenURI",
+      args: [tokenId],
+      chainId: 5,
+    });
+
+    await addGatewayForImage(tokenUri);
+  };
+
+  useEffect(() => {
+    if (uri == null) {
+      getTokenUri();
+      setPrice(
+        (prevVal) =>
+          Math.round(ethers.utils.formatEther(prevVal || "0") * 10000) / 10000
+      );
+    } else {
+      addGatewayForImage(uri);
+    }
+    setIsLoading(false);
+  }, [uri]);
 
   const navigate = useNavigate();
   const handleNavigate = ({
@@ -52,18 +70,39 @@ const NftCard = ({
     description = "",
     attributes = "",
     image = defaultImage,
+    voucherId,
+    signature,
+    uri,
   }) => {
-    navigate(`/nft-details/${nftAddress}/${tokenId}`, {
-      state: {
-        nftAddress: nftAddress,
-        tokenId: tokenId,
-        seller: seller,
-        image: image,
-        price: price,
-        description: description,
-        attributes: attributes,
-      },
-    });
+    if (nftAddress !== null && nftAddress !== undefined) {
+      navigate(`/nft-details/${nftAddress}/${tokenId}`, {
+        state: {
+          nftAddress: nftAddress,
+          voucherId: null,
+          tokenId: tokenId,
+          seller: seller,
+          image: image,
+          price: price,
+          description: description,
+          attributes: attributes,
+        },
+      });
+    } else {
+      navigate(`/nft-details/${voucherId}/${tokenId}`, {
+        state: {
+          nftAddress: null,
+          voucherId: voucherId,
+          tokenId: tokenId,
+          seller: seller,
+          image: image,
+          price: price,
+          description: description,
+          attributes: attributes,
+          signature: signature,
+          uri: uri,
+        },
+      });
+    }
   };
 
   return (
@@ -81,6 +120,9 @@ const NftCard = ({
           image: nftMetaData.image,
           description: nftMetaData.description,
           attributes: nftMetaData.attributes,
+          voucherId: voucherId,
+          signature: signature,
+          uri: uri,
         });
       }}
     >
@@ -96,7 +138,7 @@ const NftCard = ({
       {Boolean(parseInt(price)) && (
         <div className="px-6 py-4">
           <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-            {price} ETH
+            {!isLoading ? `${price} ETH` : "..."}
           </span>
         </div>
       )}

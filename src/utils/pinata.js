@@ -22,7 +22,6 @@ export const uploadFileToPinata = async (file) => {
 
     const ipfsLink = `ipfs://${resFile.data.IpfsHash}`;
     const ipfsGatewayLink = `https://gateway.ipfscdn.io/ipfs/${resFile.data.IpfsHash}`;
-    console.log(ipfsLink);
 
     return ipfsGatewayLink;
   } catch (error) {
@@ -32,10 +31,6 @@ export const uploadFileToPinata = async (file) => {
 
 export const uploadJsonToPinata = async (file) => {
   try {
-    console.log(file);
-    // const formData = new FormData();
-    // formData.append("file", file);
-
     const resFile = await axios({
       method: "post",
       url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
@@ -66,7 +61,6 @@ export const fetchJsonFromIpfs = async (link) => {
       method: "get",
       url: link,
     });
-    console.log("response", response.data);
     return response.data;
   } catch (error) {
     console.error(error);

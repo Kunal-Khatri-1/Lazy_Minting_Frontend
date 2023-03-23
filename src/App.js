@@ -20,10 +20,7 @@ import { StateContextProvider } from "./context/index";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { useState } from "react";
 
-// import.meta.env.ALCHEMY_API_KEY giving undefined
 const AlchemyApiKey = "JSjmeHbz9YFP4Lq7nvKXTvwejLiJirLA";
-
-// console.log(import.meta.env);
 
 const { chains, provider } = configureChains(
   [goerli],
@@ -88,7 +85,7 @@ function App() {
                     path="nft-details/:id/:id"
                     element={<pages.NftDescription />}
                   />
-                  <Route path="/threed" element={<pages.Three />} />
+                  <Route path="/cool_mode" element={<pages.Three />} />
                 </Routes>
                 <components.Footer />
               </StateContextProvider>

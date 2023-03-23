@@ -11,6 +11,7 @@ import axios from "axios";
 
 const Create = () => {
   const { lazyNftAddress } = useStateContext();
+  const [isLoading, setIsLoading] = useState(null);
 
   const { data: signer } = useSigner();
 
@@ -31,7 +32,6 @@ const Create = () => {
     e.preventDefault();
 
     const uri = await utils.uploadJsonToPinata(JSON.stringify({ ...form }));
-    console.log(form.tokenId, uri, form.price, signer, lazyNftAddress);
     const newVoucher = await utils.createVoucher(
       form.tokenId,
       uri,
@@ -40,28 +40,21 @@ const Create = () => {
       lazyNftAddress,
       form.properties
     );
+    newVoucher.minPrice = ethers.utils.formatEther(newVoucher.minPrice);
 
     const res = await axios({
       method: "get",
-      url: "https://lazy-mint-api.onrender.com/nft",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
+      url: "http://localhost:8000/vouchers",
     });
-
-    console.log("nfts from server", res.data);
 
     const response = await axios({
       method: "post",
-      url: "https://lazy-mint-api.onrender.com/nft/create",
-      data: newVoucher,
+      url: "http://localhost:8000/vouchers",
+      data: JSON.stringify(newVoucher),
       headers: {
         "Content-Type": "application/json",
       },
-      withCredentials: true,
     });
-
-    console.log(response);
   };
 
   return (
@@ -80,7 +73,11 @@ const Create = () => {
           <form onSubmit={handleSubmit} className="mt-8">
             <div>
               <h3 className="text-2xl">Upload Image *</h3>
-              <components.DropBox form={form} setForm={setForm} />
+              <components.DropBox
+                form={form}
+                setForm={setForm}
+                setIsLoading={setIsLoading}
+              />
             </div>
 
             <div className="mt-8">
@@ -91,6 +88,7 @@ const Create = () => {
                 className="mt-2 py-[15px] sm:px-[25px] px-[15px] outline-none border-[1px] border-white bg-transparent text-white text-[14px] placeholder:text-gray-400 rounded-[10px] w-4/6 max-w-[500px] hover:border-blue-500 focus:border-blue-500"
                 value={form.name}
                 onChange={(e) => handleFormFieldChange("name", e.target.value)}
+                disabled={isLoading}
               />
             </div>
 
@@ -104,6 +102,7 @@ const Create = () => {
                 onChange={(e) =>
                   handleFormFieldChange("description", e.target.value)
                 }
+                disabled={isLoading}
               />
             </div>
 
@@ -119,6 +118,7 @@ const Create = () => {
                 onChange={(e) =>
                   handleFormFieldChange("tokenId", e.target.value)
                 }
+                disabled={isLoading}
               />
             </div>
 
@@ -133,6 +133,7 @@ const Create = () => {
                 className="mt-2 py-[15px] sm:px-[25px] px-[15px] outline-none border-[1px] border-white bg-transparent text-white text-[14px] placeholder:text-gray-400 rounded-[10px] w-4/6 max-w-[500px] hover:border-blue-500 focus:border-blue-500"
                 value={form.price}
                 onChange={(e) => handleFormFieldChange("price", e.target.value)}
+                disabled={isLoading}
               />
             </div>
 
@@ -140,14 +141,19 @@ const Create = () => {
               <div>
                 <h3 className="text-2xl">Properties</h3>
               </div>
-              <components.AddNftProperties form={form} setForm={setForm} />
+              <components.AddNftProperties
+                form={form}
+                setForm={setForm}
+                disabled={isLoading}
+              />
             </div>
 
             <div>
               <components.Button
                 text="Submit"
-                styles=" w-full py-2"
+                styles={`w-full py-2 ${isLoading === false ? "" : "disabled"}`}
                 btnType="submit"
+                disabled={isLoading}
               />
             </div>
           </form>

@@ -5,8 +5,6 @@ export const createVoucher = async (
   signer,
   LazyNftAddress
 ) => {
-  console.log(signer);
-
   const SIGNING_DOMAIN = "LazyNFT-Voucher";
   const SIGNATURE_VERSION = "1";
 
@@ -29,9 +27,6 @@ export const createVoucher = async (
 
   const signature = await signer._signTypedData(domain, types, voucher);
   console.log(signature);
-  //   console.log(
-  // `tokenId: ${tokenId}, uri: ${uri}, minPrice: ${minPrice}, signature: ${signature}`
-  //   );
 
   return {
     ...voucher,

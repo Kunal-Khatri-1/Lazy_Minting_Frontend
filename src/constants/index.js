@@ -808,10 +808,6 @@ const marketplaceAbi = [
 ];
 
 export const contractDetails = {
-  // https://goerli.etherscan.io/address/0x9f3063c5E25d3a25AB709E46B696bb6BA46225AF#code
-  // https://goerli.etherscan.io/address/0x80a31853713cb11e6a6ce590a7f716ea42834a8f#code
-  // https://goerli.etherscan.io/address/0xdB46875677F7AbF32AF22d701ef3260CDddD8bCa#code
-  // 5: {},
   5: {
     basicNft: {
       abi: basicNftAbi,
@@ -826,15 +822,4 @@ export const contractDetails = {
       abi: lazyNftAbi,
     },
   },
-
-  // basicNft: {
-  //   abi: basicNftAbi,
-  // },
 };
-
-// Build completed: QmcSVypxxa634v1BJ4oTEgPi9GByyD3xjqT8FdamsGbxgK
-
-// Deployed to https://thegraph.com/studio/subgraph/lazy-nft-marketplace
-
-// Subgraph endpoints:
-// Queries (HTTP):     https://api.studio.thegraph.com/query/37907/lazy-nft-marketplace/v0.0.1

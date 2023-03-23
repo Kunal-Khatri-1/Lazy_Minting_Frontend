@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { FaTwitter, FaInstagram, FaDiscord, FaReddit } from "react-icons/fa";
+import { FaTwitter, FaLinkedin, FaGithub } from "react-icons/fa";
 
 function Footer() {
   return (
@@ -26,17 +26,20 @@ function Footer() {
               <h3 className="text-lg font-bold mb-4">Hang Out With Us</h3>
             </div>
             <div className="flex mt-4 md:mt-0">
-              <Link to="/" className="mr-4" />
-              <FaTwitter className="text-2xl cursor-pointer" />
+              <Link to="https://twitter.com/KunalKhatri137" className="mr-4">
+                <FaTwitter className="text-2xl cursor-pointer" />
+              </Link>
 
-              <Link to="/" className="mr-4" />
-              <FaInstagram className="text-2xl cursor-pointer" />
+              <Link
+                to="https://www.linkedin.com/in/kunal-khatri-90a276218/"
+                className="mr-4"
+              >
+                <FaLinkedin className="text-2xl cursor-pointer" />
+              </Link>
 
-              <Link to="/" className="mr-4" />
-              <FaDiscord className="text-2xl cursor-pointer" />
-
-              <Link to="/" className="mr-4" />
-              <FaReddit className="text-2xl cursor-pointer" />
+              <Link to="https://github.com/Kunal-Khatri-1" className="mr-4">
+                <FaGithub className="text-2xl cursor-pointer" />
+              </Link>
             </div>
           </div>
         </div>

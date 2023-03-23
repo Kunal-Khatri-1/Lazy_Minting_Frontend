@@ -4,24 +4,18 @@ import { Link } from "react-router-dom";
 
 import images from "../images/index";
 
-import components from "./index";
-
 const Navbar = () => {
   const [isActive, setIsActive] = useState("");
 
   const toggleLink = (e) => {
     const linkClicked = e;
-    if (linkClicked == "Profile") {
-      console.log("profile");
+    if (linkClicked === "Profile") {
       setIsActive("Profile");
-    } else if (linkClicked == "Explore") {
-      console.log("Explore");
+    } else if (linkClicked === "Explore") {
       setIsActive("Explore");
-    } else if (linkClicked == "Create") {
-      console.log("Create");
+    } else if (linkClicked === "Create") {
       setIsActive("Create");
-    } else if (linkClicked == "Sell") {
-      console.log("Sell");
+    } else if (linkClicked === "Sell") {
       setIsActive("Sell");
     } else {
       setIsActive("");
@@ -54,7 +48,7 @@ const Navbar = () => {
         <div className="flex flex-row items-center gap-20 justify-center font-semibold text-lg">
           <div
             className={`hover:bg-blue-500 px-2 py-1 rounded-md cursor-pointer ${
-              isActive == "Profile" ? "bg-blue-500" : ""
+              isActive === "Profile" ? "bg-blue-500" : ""
             }`}
             onClick={() => toggleLink("Profile")}
           >
@@ -63,40 +57,40 @@ const Navbar = () => {
             </Link>
             {/* <MdOutlineAccountCircle /> */}
           </div>
-          <div
-            className={`hover:bg-blue-500 px-2 py-1 rounded-md cursor-pointer ${
-              isActive == "Explore" ? "bg-blue-500" : ""
-            }`}
-            onClick={() => toggleLink("Explore")}
-          >
-            <Link to="explore">
+          <Link to="explore">
+            <div
+              className={`hover:bg-blue-500 px-2 py-1 rounded-md cursor-pointer ${
+                isActive === "Explore" ? "bg-blue-500" : ""
+              }`}
+              onClick={() => toggleLink("Explore")}
+            >
               <span>Explore</span>
-            </Link>
-            {/* <MdOutlineExplore /> */}
-          </div>
-          <div
-            className={`hover:bg-blue-500 px-2 py-1 rounded-md cursor-pointer ${
-              isActive == "Create" ? "bg-blue-500" : ""
-            }`}
-            onClick={() => toggleLink("Create")}
-          >
-            <Link to="create">
+              {/* <MdOutlineExplore /> */}
+            </div>
+          </Link>
+          <Link to="create">
+            <div
+              className={`hover:bg-blue-500 px-2 py-1 rounded-md cursor-pointer ${
+                isActive === "Create" ? "bg-blue-500" : ""
+              }`}
+              onClick={() => toggleLink("Create")}
+            >
               <span>Create</span>
-            </Link>
-            {/* <MdOutlineCreate /> */}
-          </div>
+              {/* <MdOutlineCreate /> */}
+            </div>
+          </Link>
 
-          <div
-            className={`hover:bg-blue-500 px-2 py-1 rounded-md cursor-pointer ${
-              isActive == "Sell" ? "bg-blue-500" : ""
-            }`}
-            onClick={() => toggleLink("Sell")}
-          >
-            <Link to="sell">
+          <Link to="sell">
+            <div
+              className={`hover:bg-blue-500 px-2 py-1 rounded-md cursor-pointer ${
+                isActive === "Sell" ? "bg-blue-500" : ""
+              }`}
+              onClick={() => toggleLink("Sell")}
+            >
               <span>Sell</span>
-            </Link>
-            {/* <MdOutlineCreate /> */}
-          </div>
+              {/* <MdOutlineCreate /> */}
+            </div>
+          </Link>
         </div>
 
         {/* Rainbowkit */}

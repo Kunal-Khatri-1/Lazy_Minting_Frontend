@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import Button from "./Button";
 
-function AddNftProperties({ form, setForm }) {
+function AddNftProperties({ form, setForm, disabled }) {
   const [properties, setProperties] = useState([]);
 
   const handleAddProperty = () => {
@@ -52,6 +52,7 @@ function AddNftProperties({ form, setForm }) {
         text="Add Property"
         onclick={handleAddProperty}
         styles="bg-blue-500 hover:bg-blue-600 text-white px-4 text-md font-normal w-[150px] mt-8 mb-24 py-1"
+        disabled={disabled}
       />
     </div>
   );

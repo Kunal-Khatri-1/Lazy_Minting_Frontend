@@ -5,12 +5,12 @@ import { BsImage } from "react-icons/bs";
 
 import utils from "../utils/index";
 
-const DropBox = ({ setForm, form }) => {
+const DropBox = ({ setForm, form, setIsLoading }) => {
   const [image, setImage] = useState();
 
   const onDrop = useCallback(
     async (acceptedImage) => {
-      console.log(acceptedImage);
+      setIsLoading(true);
       const imagePreview = Object.assign(acceptedImage, {
         preview: URL.createObjectURL(acceptedImage[0]),
       });
@@ -23,11 +23,13 @@ const DropBox = ({ setForm, form }) => {
         ...form,
         ["image"]: gatewayLinkImage,
       });
+
+      setIsLoading(false);
     },
     [image]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: "image/*",
     maxFiles: 1,

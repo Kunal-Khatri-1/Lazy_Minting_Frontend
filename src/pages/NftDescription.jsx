@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import components from "../components/index";
 import { useStateContext } from "../context";
@@ -7,8 +7,13 @@ import { useStateContext } from "../context";
 import { useEffect } from "react";
 
 const NftDescription = () => {
-  const { openConnectModal, isConnected, connectedAddress, buyNft } =
-    useStateContext();
+  const {
+    openConnectModal,
+    isConnected,
+    connectedAddress,
+    buyNft,
+    redeemVoucher,
+  } = useStateContext();
 
   useEffect(() => {
     if (!connectedAddress) {
@@ -17,10 +22,42 @@ const NftDescription = () => {
   }, [isConnected]);
 
   const { state } = useLocation();
-  const { nftAddress, tokenId, seller, price, description, image } = state;
+  const {
+    nftAddress,
+    voucherId,
+    tokenId,
+    seller,
+    price,
+    description,
+    image,
+    signature,
+    uri,
+    attributes,
+  } = state;
+
+  const navigate = useNavigate();
+  const handleNavigate = (image, tokenId, price) => {
+    navigate("/cool_mode", {
+      state: {
+        image: image,
+        tokenId: tokenId,
+        price: price,
+      },
+    });
+  };
 
   const handleClick = async () => {
-    await buyNft(nftAddress, tokenId, price);
+    if (nftAddress) {
+      await buyNft(nftAddress, tokenId, price);
+    } else {
+      const data = await redeemVoucher(
+        tokenId,
+        price,
+        uri,
+        signature,
+        voucherId
+      );
+    }
   };
 
   return (
@@ -28,11 +65,18 @@ const NftDescription = () => {
       {/* wrapper */}
       <div className="bg-slate-800 grid grid-cols-[5fr_8fr] px-8 py-16 gap-x-32">
         {/* nft Image */}
-        <div className="w-full overflow-hidden cursor-pointer self-center">
+        <div
+          className="w-full overflow-hidden cursor-pointer self-center"
+          onClick={() => handleNavigate(image, tokenId, price)}
+        >
           <img src={image} alt="IMG" className="object-cover rounded-lg" />
         </div>
         {/* Nft Details */}
-        <div className="grid grid-cols-[5fr_3fr] gap-x-16">
+        <div
+          className={`grid ${
+            attributes ? "grid-cols-[5fr_3fr]" : ""
+          }  gap-x-16`}
+        >
           {/* wrapper */}
           <div>
             {/* Header */}
@@ -41,10 +85,21 @@ const NftDescription = () => {
                 <h1 className="text-5xl font-semibold">#{tokenId}</h1>
               </div>
               <p className="mt-2 text-gray-300">
-                Contract:{" "}
-                <span className="text-blue-400 font-semibold">
-                  {nftAddress}
-                </span>
+                {!voucherId ? (
+                  <span>
+                    Contract:{" "}
+                    <span className="text-blue-400 font-semibold">
+                      {nftAddress}
+                    </span>
+                  </span>
+                ) : (
+                  <span>
+                    Voucher:{" "}
+                    <span className="text-blue-400 font-semibold">
+                      {voucherId}
+                    </span>
+                  </span>
+                )}
               </p>
               <p className="mt-2 text-gray-300">
                 Owned by:{" "}
@@ -70,19 +125,54 @@ const NftDescription = () => {
                 </div>
                 <components.Button
                   text="Buy Now"
-                  styles="w-full py-2 mt-4"
+                  styles="w-full py-2 mt-4 max-w-[500px]"
                   onclick={handleClick}
                 />
               </div>
             </div>
           </div>
           {/* Attributes */}
-          <div className="bg-slate-900 min-w-[200px] mr-2 px-4 py-8 rounded-md border-gray-300 border-[1px] self-center">
-            <div>
-              <h1 className="text-3xl font-semibold">Attributes</h1>
+          {Array.isArray(attributes) && (
+            <div className="bg-slate-900 min-w-[200px] mr-2 px-4 py-8 rounded-md border-gray-300 border-[1px] self-center">
+              <div>
+                <h1 className="text-3xl font-semibold">Attributes</h1>
+              </div>
+              {attributes.map((element, index) => {
+                return (
+                  <div className="mt-6 bg-blue-500 rounded-md" key={index + 1}>
+                    <div className=" px-4 py-1">
+                      <p className="text-center text-lg text-gray-200">
+                        {element.trait_type}
+                      </p>
+                      <p className="text-center font-semibold mt-2 text-lg">
+                        {element.value}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <div className="mt-6"></div>
-          </div>
+          )}
+
+          {typeof attributes === "object" &&
+            !Array.isArray(attributes) &&
+            attributes !== null && (
+              <div className="bg-slate-900 min-w-[200px] mr-2 px-4 py-8 rounded-md border-gray-300 border-[1px] self-center">
+                <div>
+                  <h1 className="text-3xl font-semibold">Attributes</h1>
+                </div>
+                <div className="mt-6 bg-blue-500 rounded-md">
+                  <div className=" px-4 py-1">
+                    <p className="text-center text-lg text-gray-200">
+                      {attributes.trait_type}
+                    </p>
+                    <p className="text-center font-semibold mt-2 text-lg">
+                      {attributes.value}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
         </div>
       </div>
     </div>
